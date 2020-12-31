@@ -310,7 +310,7 @@ module.exports = HandleMsg = async (sagiri, message) => {
         case 'oniichan':
         case 'owner':
             await sagiri.sendImage(from, './owner/info/owner.jpg', 'owner.jpg', '《📍》 *Nama:* Dwi Rizqi\n《⌛》 *Umur:* 13\n《📆》 *Ulang Tahun:* Mei 07\n《❤》 *Status*: JOMBLO :v')
-            sagiri.sendContact(from, '6281358181668@c.us')
+            sagiri.sendContact(from, ownerNumber)
             //sagiri.reply(from, 'Onichan gak bisa di contact dulu, lagi Sibuk/PAS\nUntuk melaporkan bug pakai !report bug [teks]')
             //sagiri.reply(from, 'Jika menemukan bug/error tolong laporkan ke onichan')
             break
@@ -814,18 +814,6 @@ function baseURI(buffer = Buffer.from([]), metatype = 'text/plain') {
             })
             break
         //Media
-        case 'pinterest':
-            sagiri.reply(from, 'Sedang dalam perbaikan')
-            /*if (!isGroupMsg) return sagiri.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (args.length === 0) return sagiri.reply(from, 'Kirim perintah *!pinterest [query]*\nContoh : *!pinterest Sagiri*', id)
-            const ptrsq = body.slice(11)
-            const ptrs = await axios.get('https://api.fdci.se/rep.php?gambar='+ptrsq)
-            const b = JSON.parse(JSON.stringify(ptrs.data))
-            const ptrs2 =  b[Math.floor(Math.random() * b.length)]
-            const image = await bent("buffer")(ptrs2)
-            const base64 = `data:image/jpg;base64,${image.toString("base64")}`
-            sagiri.sendImage(from, base64, 'ptrs.jpg', `*Pinterest*\n\n*Hasil Pencarian : ${ptrsq}*`)*/
-            break
         case 'ytmp3':
             if (args.length === 0) return sagiri.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
             let isLinks = args[0].match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)
@@ -1138,7 +1126,7 @@ function baseURI(buffer = Buffer.from([]), metatype = 'text/plain') {
                 sagiri.reply(from, 'Ada yang Error!', id)
             })
             break
-        case 'nekopoi':
+        case 'nekopoi': //Kalo gabisa coba pake VPN
             //sagiri.sendText(from, `Gomenne, Sagiri masih di bawah umur`)
             rugapoi.getLatest()
             .then((result) => {
@@ -1148,7 +1136,7 @@ function baseURI(buffer = Buffer.from([]), metatype = 'text/plain') {
                     for (let i = 0; i < res.links.length; i++) {
                         heheq += `${res.links[i]}\n`
                     }
-                    sagiri.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`)
+                    sagiri.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}`)
                 })
             })
             .catch(() => {
@@ -2052,48 +2040,16 @@ function baseURI(buffer = Buffer.from([]), metatype = 'text/plain') {
 Berikut adalah fitur admin yang ada pada bot ini!
 
 ─➤ *!client kill* - Menonaktifkan bot
-─➤ *!client restart* - Restart bot
 
 Gunakan sebaik-baiknya`)
             } else
             if (args[0] == 'kill') {
-                sagiri.reply(from, 'Killed')
+                sagiri.reply(from, 'Bye, Oniichan sagiri tidur dulu')
                 await sleep(5000)
                 sagiri.kill()
-            } else
-            if (args[0] == 'restart') {
-                sagiri.sendText(from, '*[WARN]* Restarting ...')
-                setting.restartState = true
-                setting.restartId = chatId
-                var obj = []
-                //fs.writeFileSync('./lib/setting.json', JSON.stringify(obj, null,2));
-                //fs.writeFileSync('./lib/limit.json', JSON.stringify(obj));
-                //fs.writeFileSync('./lib/muted.json', JSON.stringify(obj));
-                //fs.writeFileSync('./lib/msgLimit.json', JSON.stringify(obj));
-                fs.writeFileSync('./settings/banned.json', JSON.stringify(obj));
-                //fs.writeFileSync('./lib/welcome.json', JSON.stringify(obj));
-                //fs.writeFileSync('./lib/left.json', JSON.stringify(obj));
-                fs.writeFileSync('./settings/simi.json', JSON.stringify(obj));
-                //fs.writeFileSync('./lib/nsfwz.json', JSON.stringify(obj));
-                const spawn = require('child_process').exec;
-                function os_func() {
-                    this.execCommand = function (command) {
-                        return new Promise((resolve, reject)=> {
-                        spawn(command, (error, stdout, stderr) => {
-                            if (error) {
-                                reject(error);
-                                return;
-                            }
-                            resolve(stdout)
-                        });
-                    })
-                }}
-                var oz = new os_func();
-                oz.execCommand('npm restart index').then(res=> {
-                }).catch(err=> {
-                    console.log("os >>>", err);
-                })
-            }
+            } else {
+	    sagiri.reply(from, 'Ketik !client menu')
+	    } //Restart ny w ilangin soalny error
             break
         case 'report':
             const time = moment(t * 1000).format('DD/MM HH:mm:ss')
@@ -2102,10 +2058,10 @@ Gunakan sebaik-baiknya`)
             const bug = body.slice(11)
             if(!bug) return
             if(isGroupMsg){
-                sagiri.sendText('6281358181668@c.us', `*[BUG REPORT]*\n*WAKTU* : ${time}\nNO PENGIRIM : wa.me/${sender.id.match(/\d+/g)}\nGroup: ${formattedTitle}\n\n${bug}`)
+                sagiri.sendText(ownerNumber, `*[BUG REPORT]*\n*WAKTU* : ${time}\nNO PENGIRIM : wa.me/${sender.id.match(/\d+/g)}\nGroup: ${formattedTitle}\n\n${bug}`)
                 sagiri.reply(from, 'Masalah telah di laporkan ke oniichan, laporan palsu/main2 tidak akan ditanggapi.' ,id)
             }else{
-                sagiri.sendText('6281358181668@c.us', `*[BUG REPORT]*\n*WAKTU* : ${time}\nNO PENGIRIM : wa.me/${sender.id.match(/\d+/g)}\n\n${bug}`)
+                sagiri.sendText(ownerNumber, `*[BUG REPORT]*\n*WAKTU* : ${time}\nNO PENGIRIM : wa.me/${sender.id.match(/\d+/g)}\n\n${bug}`)
                 sagiri.reply(from, 'Masalah telah di laporkan ke oniichan, laporan palsu/main2 tidak akan ditanggapi.', id)
             }
             break
