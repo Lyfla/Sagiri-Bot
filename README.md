@@ -38,16 +38,23 @@ Install the dependencies:
 ```bash
 > npm install 
 > npm install gify-cli -g
+> npm install pm2 -g
 ```
 
 ### Usage
 Run the Whatsapp bot
 
 ```bash
-> npm start
+> pm2 start run.js
 ```
 
 after running it you need to scan the qr
+
+### Stop BOT
+```bash
+> pm2 stop run.js
+> pm2 stop index.js
+```
 
 ### Information
 - Change ownerNumber on [this section](https://github.com/ArugaZ/whatsapp-bot/blob/master/settings/setting.json#L2)
