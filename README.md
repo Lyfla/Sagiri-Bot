@@ -46,6 +46,7 @@ Run the Whatsapp bot
 
 ```bash
 > pm2 start run.js
+> pm2 monit
 ```
 
 after running it you need to scan the qr
